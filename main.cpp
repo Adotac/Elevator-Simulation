@@ -32,30 +32,34 @@ int main(void) {
 
 	do {
 		system("cls");
-		
-		printf("%s", showQueue(qFront, qRear, riders));
+		baseFloor = rand() % MAX_FLOORS + 1;
+
+		//printf("%s", showQueue(qFront, qRear, riders));
 
 		users = rand() % MAX_USERS;
+		printf("\nRequests generated: %d", totalRequests);
 		printf("\nCurrent active users: %d", users);
 
 		for (int u = 0; u < users; u++) {
-			printf("\nInput \'11\' if you want to automate simulation or \'99\' to exit the program.");
-			printf("\nWhich floor do you want to go: ");
+			printf("\nElevator Current Floor: %d", head->floor);
+			printf("\nUser Base floor: %d", baseFloor);
+			printf("\n\nInput \'11\' if you want to automate simulation or \'99\' to exit the program.");
+			printf("\nUser %d: Which floor do you want to go: ", u+1);
 			scanf_s("%d", &input_flr);
 
 			switch (input_flr) {
 			case 99:
 				mFlag = TRUE;
+				u = MAX_USERS;
 				break;
 			case 11:
 				// AUTO SIMULATION FUNCTION HERE
 				mFlag = TRUE;
 				break;
 			default:
-				printf("\nBase floor: %d", baseFloor);
-				printf("\nCurrent Floor: %d", head->floor);
+				
 
-				head = inputRequest(totalRequests, qFront, qRear, baseFloor, minutes, input_flr, direction, head);
+				head = inputRequest(totalRequests, qFront, qRear, baseFloor, direction, minutes, input_flr, head);
 				break;
 			}
 			baseFloor = rand() % MAX_FLOORS + 1;
@@ -63,7 +67,7 @@ int main(void) {
 		if (input_flr == 11)
 			continue; // skip and terminate loop
 
-
+		head = elevatorOperation(head);
 	} while (mFlag == FALSE);
 
 

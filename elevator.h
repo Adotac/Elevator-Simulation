@@ -24,34 +24,34 @@ enum DIRECTION {UP, DOWN};
 typedef struct REQUEST Request;
 struct REQUEST {
     int request_id;
-    int orig_flr;
-    int dest_flr;
+    int orig_flr, dest_flr;
     int time;
 };
 
 typedef struct NODE Node;
 struct NODE {
     int floor;
+    int wFront, wRear;
     REQUEST waiting[MAX_REQUESTS];
     Node* next;
     Node* prev;
 };
 
-//typedef struct QNODE Queue;
-//struct QNODE {
-//    Request data;
-//    Queue* next;
-//};
-
+// DLL functions
 void append(Node**, int);
 void printAllFloors(Node*);
-Node* traverseUpward(Node*);
-Node* traverseDownward(Node*);
+Node* traverseUpward(Node*, int& dir);
+Node* traverseDownward(Node*, int& dir);
 
+// Queue Functions
+int isQueueEmpty(int qFront, int qRear);
+void dequeue(int& qFront, int qRear, Request* arr);
+int isQueueFull(int qRear);
+void enqueue(int& qRear, Request* arr, Request val);
 char* showQueue(int qFront, int qRear, Request* arr);
 
-Request generateRequest(int&, int);
-Node* inputRequest(int&, int&, int&, int&, int, int, int, Node*);
-
-int incrementBase(int base);
+Request generateRequest(int&, int, int);
+Node* traverseToRequester(Node* n, int& dir, int& base);
+Node* inputRequest(int&, int&, int&, int&, int&, int, int, Node*);
+Node* elevatorOperation(Node* node); // wapani nahuman
 #endif

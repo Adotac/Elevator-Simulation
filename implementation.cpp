@@ -11,6 +11,8 @@ void append(Node** head_ref, int floor)
 
     /* 2. put in the data  */
     new_node->floor = floor;
+    new_node->wFront = 0;
+    new_node->wRear = 0;
 
 
     /* 3. This new node is going to be the last node, so
@@ -46,11 +48,16 @@ void printAllFloors(Node* node)
     }
 }
 
-Node* traverseUpward(Node* node)
+Node* traverseUpward(Node* node, int& dir)
 {   
     if (node == NULL)
     {
-        printf("\nThe node is Empty!!\n");
+        printf("\nNode not available\n");
+        return node;
+    }
+    else if (node->floor == MAX_FLOORS) {
+        printf("\nReached the top!!\n");
+        dir = DOWN;
         return node;
     }
     
@@ -58,11 +65,16 @@ Node* traverseUpward(Node* node)
     printf(" \n%d ", node->floor);
 }
 
-Node* traverseDownward(Node* node)
+Node* traverseDownward(Node* node, int& dir)
 {
     if (node == NULL)
     {
-        printf("\nThe node is Empty!!\n");
+        printf("\nNode not available\n");
+        return node;
+    }
+    else if (node->floor == MAX_FLOORS) {
+        printf("\nReached the bottom!!\n");
+        dir = UP;
         return node;
     }
     return node->prev;
@@ -139,25 +151,34 @@ char* showQueue(int qFront, int qRear, Request *arr)
 
 //--------------------------------------------------//
 
-int incrementBase(int base) {
-    base++;
-    if (base > 10)
-        return 1;
-    return base;
-}
-
-Request generateRequest(int& totalReq, int min) {
+Request generateRequest(int& totalReq, int min, int base) {
     int max_n = MAX_FLOORS, min_n = 1;
     Request new_R;
     totalReq++;
     new_R.request_id = totalReq;
-    new_R.orig_flr = rand() % max_n + min_n;
+    new_R.orig_flr = base;
     new_R.dest_flr = rand() % max_n + new_R.orig_flr;
     new_R.time = min;
     return new_R;
 }
 
-Node* inputRequest(int& totalReq, int& qF, int& qR, int& base, int min, int dest, int direction, Node* node) {
+Node* traverseToRequester(Node* n, int& dir, int& base) {
+    Node* temp = n;
+    if (dir == UP) {
+        while (temp->floor != base) {
+            temp = traverseUpward(temp, dir);
+        }
+    }
+    else {
+        while (temp->floor != base) {
+            temp = traverseDownward(temp, dir);
+        }
+    }
+
+    return temp;
+}
+
+Node* inputRequest(int& totalReq, int& qF, int& qR, int& base, int &direction, int min, int dest, Node* node) {
     Node* tempNode = node;
     Request new_R;
     totalReq++;
@@ -171,30 +192,11 @@ Node* inputRequest(int& totalReq, int& qF, int& qR, int& base, int min, int dest
         printf("\nFloor doesn't exist! Please try again...\n");
         return node;
     }
-    else if (dest > 0) {
-        if (direction == UP) {
-            while (tempNode->floor != base) {
-                tempNode = traverseUpward(node);
-            }
-        }
-        else {
-            while (tempNode->floor != base) {
-                tempNode = traverseDownward(node);
-            }
-        }
-
-        if ((base < dest && direction == UP) || (base < dest && isQueueEmpty(qF, qR) == TRUE)) {
-            enqueue(qR, tempNode->waiting, new_R);
-            //base = incrementBase(base);
-            return tempNode;
-        }
-        else if ((base > dest && direction == DOWN) || (base > dest && isQueueEmpty(qF, qR) == TRUE)) {
-            enqueue(qR, tempNode->waiting, new_R);
-            //base = incrementBase(base);
-            return tempNode;
-        }
-        printf("\nElevator going on opposite direction, please try again later...\n");
-        return node;
+    else if (dest > 0 && dest <= MAX_FLOORS) {
+        node = traverseToRequester(node, direction, base);
+        enqueue(node->wRear, node->waiting, new_R);
+        //base = incrementBase(base);
+        return tempNode;
     }
     else {
         printf("\nFloor doesn't exist! Please try again...\n");
@@ -203,7 +205,24 @@ Node* inputRequest(int& totalReq, int& qF, int& qR, int& base, int min, int dest
 }
 
 
+// pickup riders of elevator per floor
+Node* elevatorOperation(Node* node) {
+    Node* tempNode = node;
+    int i = 0;
 
-void elevatorOperation() {
+    while (node->waiting[i].request_id > 0) {
+        
 
+
+        i++;
+    }
+
+    /*if ((node->waiting < dest && direction == UP) || (base < dest && isQueueEmpty(qF, qR) == TRUE)) {
+        
+    }
+    else if ((base > dest && direction == DOWN) || (base > dest && isQueueEmpty(qF, qR) == TRUE)) {
+        
+    }
+    printf("\nElevator going on opposite direction, please try again later...\n");*/
+    return tempNode;
 }
