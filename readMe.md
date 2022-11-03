@@ -2,7 +2,7 @@
 
 # Elevator Simulation
 
-## This is the specifications of ELEVATOR Problem.
+##### This is the specifications for the ELEVATOR Problem.
 
 ### Problem Statement:
 
@@ -24,7 +24,7 @@ You are to simulate a single car elevator in a 10 floor office building. The pur
 - [x] There are no occupants.
 - [x] These are no requests.
 ```
-## #Operation:
+### Operation:
 ```
 - [x] Use a random number generator to generate the number of people requesting elevator service.
 - [x] Run for a 1000 requests.
