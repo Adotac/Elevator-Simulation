@@ -1,14 +1,14 @@
 
 
-#Elevator Simulation#
+# Elevator Simulation
 
-##This is the specifications of ELEVATOR Problem.##
+## This is the specifications of ELEVATOR Problem.
 
-###Problem Statement:###
+### Problem Statement:
 
 You are to simulate a single car elevator in a 10 floor office building. The purpose of this simulator is to estimate how long it would take to evacuate people from the building under some policy that we have the elevator adhere to.
 
-###Constraints:###
+### Constraints:
 ```
 - [x] Requests to go UP or DOWN occur at the rate of between 0 and 3 riders per  minute per  floor. (The Random class and the Math class have methods that will be helpful in generating random numbers.)
 - [x] The elevator starts at floor 1 and returns there when there are no riders or requests.
@@ -18,18 +18,18 @@ You are to simulate a single car elevator in a 10 floor office building. The pur
 ```
  
 
-###Initial Conditions:###
+### Initial Conditions:
 ```
 - [x] The elevator rests at floor 1.
 - [x] There are no occupants.
 - [x] These are no requests.
 ```
-###Operation:###
+## #Operation:
 ```
 - [x] Use a random number generator to generate the number of people requesting elevator service.
 - [x] Run for a 1000 requests.
 ```
-###Data Displays:###
+### Data Displays:
 ```
 For each event show (print):
 - [x] the current floor,
@@ -55,7 +55,7 @@ At the end of the simulation show (print):
 ```
  
 
-###Strategy###
+### Strategy
 
 You want to create a doublelinked queue to maintain the requests to go UP or DOWN.
 
